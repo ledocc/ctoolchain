@@ -56,6 +56,10 @@ function(ctoolchain__compiler__use_gcc)
     ctoolchain__compiler__find_compiler(gcc_path gcc${suffix})
     ctoolchain__compiler__find_compiler(gxx_path g++${suffix})
 
+    if (NOT "${gxx_path}" MATCHES ".*g\\+\\+${suffix}")
+        string(REPLACE "gcc${suffix}" "g++${suffix}" gxx_path "${gxx_path}")
+    endif()
+
     ctoolchain__compiler__use_compiler("${gcc_path}" "${gxx_path}")
 
 endfunction()
