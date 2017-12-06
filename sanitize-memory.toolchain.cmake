@@ -1,4 +1,4 @@
-
+include_guard(GLOBAL)
 
 
 include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
@@ -11,7 +11,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
 
 ctoolchain__compiler__use_clang()
 
-ctoolchain__flags__use_sanitizer_memory()
+ctoolchain__flags__use_sanitize_memory()
 ctoolchain__clean__var_init_list()
 
 ##--------------------------------------------------------------------------------------------------------------------##

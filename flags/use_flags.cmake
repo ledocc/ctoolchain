@@ -45,11 +45,13 @@ macro(ctoolchain__flags__use_sanitize_address)
 
     list(APPEND CMAKE_CXX_FLAGS_INIT "-fsanitize=address")
     list(APPEND CMAKE_CXX_FLAGS_INIT "-g")
-    list(APPEND CMAKE_CXX_FLAGS_RELEASE_INIT "-O1 -DNDEBUG")
+    list(APPEND CMAKE_CXX_FLAGS_RELEASE_INIT "-O1")
+    list(APPEND CMAKE_CXX_FLAGS_RELEASE_INIT "-DNDEBUG")
 
     list(APPEND CMAKE_C_FLAGS_INIT "-fsanitize=address")
     list(APPEND CMAKE_C_FLAGS_INIT "-g")
-    list(APPEND CMAKE_C_FLAGS_RELEASE_INIT "-O1 -DNDEBUG")
+    list(APPEND CMAKE_C_FLAGS_RELEASE_INIT "-O1")
+    list(APPEND CMAKE_C_FLAGS_RELEASE_INIT "-DNDEBUG")
 
 endmacro()
 
@@ -67,21 +69,29 @@ endmacro()
 
 ##--------------------------------------------------------------------------------------------------------------------##
 
-macro(ctoolchain__flags__use__sanitize_memory)
+macro(ctoolchain__flags__use_sanitize_memory)
 
     list(APPEND CMAKE_CXX_FLAGS_INIT "-fsanitize=memory")
-    list(APPEND CMAKE_CXX_FLAGS_INIT "-fsanitize-memory-track-origins")
+    list(APPEND CMAKE_CXX_FLAGS_INIT "-fsanitize-memory-track-origins=2")
+    list(APPEND CMAKE_CXX_FLAGS_INIT "-fno-omit-frame-pointer")
+    list(APPEND CMAKE_CXX_FLAGS_INIT "-fno-optimize-sibling-calls")
     list(APPEND CMAKE_CXX_FLAGS_INIT "-g")
+    list(APPEND CMAKE_CXX_FLAGS_RELEASE_INIT "-O1")
+    list(APPEND CMAKE_CXX_FLAGS_RELEASE_INIT "-DNDEBUG")
 
     list(APPEND CMAKE_C_FLAGS_INIT "-fsanitize=memory")
-    list(APPEND CMAKE_C_FLAGS_INIT "-fsanitize-memory-track-origins")
+    list(APPEND CMAKE_C_FLAGS_INIT "-fsanitize-memory-track-origins=2")
+    list(APPEND CMAKE_C_FLAGS_INIT "-fno-omit-frame-pointer")
+    list(APPEND CMAKE_C_FLAGS_INIT "-fno-optimize-sibling-calls")
     list(APPEND CMAKE_C_FLAGS_INIT "-g")
+    list(APPEND CMAKE_C_FLAGS_RELEASE_INIT "-O1")
+    list(APPEND CMAKE_C_FLAGS_RELEASE_INIT "-DNDEBUG")
 
 endmacro()
 
 ##--------------------------------------------------------------------------------------------------------------------##
 
-macro(ctoolchain__flags__use__sanitize_thread)
+macro(ctoolchain__flags__use_sanitize_thread)
 
     list(APPEND CMAKE_CXX_FLAGS_INIT "-fsanitize=thread")
     list(APPEND CMAKE_CXX_FLAGS_INIT "-fPIE")
@@ -133,18 +143,32 @@ endmacro()
 
 ##--------------------------------------------------------------------------------------------------------------------##
 
+macro(ctoolchain__reset_var variable)
+    get_property(GLOBAL CTOOLCHAIN__RESET_${variable} reseted)
+
+    if(NOT reseted)
+        set_property(GLOBAL CTOOLCHAIN__RESET_${variable} 1)
+        set(${variable})
+    endif()
+
+endmacro()
+
 macro(ctoolchain__clean__var_init_list)
 
     set(var_init
         CMAKE_C_FLAGS_INIT
+        CMAKE_C_FLAGS_RELEASE_INIT
         CMAKE_CXX_FLAGS_INIT
+        CMAKE_CXX_FLAGS_RELEASE_INIT
         CMAKE_EXE_LINKER_FLAGS_INIT
         CMAKE_SHARED_LINKER_FLAGS_INIT
         )
 
     foreach(var IN LISTS var_init)
         if(DEFINED ${var})
+            list(REMOVE_DUPLICATES ${var})
             string(REPLACE ";" " " ${var} "${${var}}")
+            message(STATUS "[ctoolchain] - ${var} = ${${var}}")
         endif()
     endforeach()
 
