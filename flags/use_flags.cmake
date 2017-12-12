@@ -16,6 +16,24 @@ endmacro()
 
 ##--------------------------------------------------------------------------------------------------------------------##
 
+macro(ctoolchain__flags__build_32bit)
+
+    list(APPEND CMAKE_C_FLAGS_INIT "-m32")
+    list(APPEND CMAKE_CXX_FLAGS_INIT "-m32")
+
+endmacro()
+
+##--------------------------------------------------------------------------------------------------------------------##
+
+macro(ctoolchain__flags__build_64bit)
+
+    list(APPEND CMAKE_C_FLAGS_INIT "-m64")
+    list(APPEND CMAKE_CXX_FLAGS_INIT "-m64")
+
+endmacro()
+
+##--------------------------------------------------------------------------------------------------------------------##
+
 macro(ctoolchain__flags__use_fpic)
 
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
