@@ -1,6 +1,8 @@
 
+
+
 #.rst:
-# ctoolchain__init_android
+# ctoolchain__os__use_android
 # ---------------
 #
 # Functions to help define android ndk variable
@@ -30,3 +32,28 @@ function(ctoolchain__os__use_android api_level arch_abi toolchain_version stl_ty
     set(CMAKE_ANDROID_STL_TYPE              ${stl_type}          PARENT_SCOPE)
 
 endfunction()
+
+##--------------------------------------------------------------------------------------------------------------------##
+
+function(ctoolchain__os__use_crystax)
+
+    set(variant)
+    if(CMAKE_ANDROID_ARCH_ABI MATCHES "^armeabi" AND NOT CMAKE_ANDROID_ARM_MODE)
+        set(variant thumb)
+    endif()
+
+    set(crystax_library_dir $ENV{ANDROID_NDK}/sources/crystax/libs/${CMAKE_ANDROID_ARCH_ABI}/${variant})
+
+    set(linker_flags "\"-L${crystax_library_dir}\"")
+
+    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS}    ${linker_flags}" PARENT_SCOPE)
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${linker_flags}" PARENT_SCOPE)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${linker_flags}" PARENT_SCOPE)
+    set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} ${linker_flags}" PARENT_SCOPE)
+
+
+endfunction()
+
+##--------------------------------------------------------------------------------------------------------------------##
+##--------------------------------------------------------------------------------------------------------------------##
+##--------------------------------------------------------------------------------------------------------------------##
