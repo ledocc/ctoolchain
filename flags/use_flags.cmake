@@ -14,6 +14,17 @@ macro(ctoolchain__flags__use_cxx version)
 
 endmacro()
 
+macro(ctoolchain__flags__use_last_cxx_version)
+
+    set(version $ENV{CTOOLCHAIN_LAST_CXX_VERSION})
+    if( "${version}" STREQUAL "" )
+        set(version 14)
+    endif()
+
+    ctoolchain__flags__use_cxx( ${version} )
+
+endmacro()
+
 ##--------------------------------------------------------------------------------------------------------------------##
 
 macro(ctoolchain__flags__build_32bit)
@@ -170,6 +181,8 @@ macro(ctoolchain__reset_var variable)
     endif()
 
 endmacro()
+
+##--------------------------------------------------------------------------------------------------------------------##
 
 macro(ctoolchain__clean__var_init_list)
 
