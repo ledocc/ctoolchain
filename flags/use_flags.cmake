@@ -14,6 +14,8 @@ macro(ctoolchain__flags__use_cxx version)
 
 endmacro()
 
+##--------------------------------------------------------------------------------------------------------------------##
+
 macro(ctoolchain__flags__use_last_cxx_version)
 
     set(version $ENV{CTOOLCHAIN_LAST_CXX_VERSION})
