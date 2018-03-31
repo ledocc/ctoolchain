@@ -10,7 +10,7 @@ function(ctoolchain__compiler__find_compiler result compiler_name)
     find_program(compiler_path "${compiler_name}")
 
     if(NOT compiler_path)
-        message(FATAL_ERROR "[ctoolchain] Compiler executable \"${compiler_name}\" not found")
+        message(FATAL_ERROR "[ctoolchain] - Compiler executable \"${compiler_name}\" not found.")
     endif()
 
     set(${result} "${compiler_path}" PARENT_SCOPE)

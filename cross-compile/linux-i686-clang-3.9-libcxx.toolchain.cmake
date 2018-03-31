@@ -1,7 +1,7 @@
 
 
 
-include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/../ctoolchain.cmake")
 
 
 
@@ -9,12 +9,9 @@ include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##
 
-ctoolchain__compiler__use_gcc()
+ctoolchain__os__use_linux(i686)
 
-ctoolchain__flags__use_last_cxx_version()
-
-ctoolchain__flags__build_64bit()
-ctoolchain__clean__var_init_list()
+include("${CMAKE_CURRENT_LIST_DIR}/../clang-3.9-libcxx.toolchain.cmake")
 
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##

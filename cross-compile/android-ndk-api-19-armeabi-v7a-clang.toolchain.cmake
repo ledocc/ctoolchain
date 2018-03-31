@@ -1,7 +1,7 @@
 
 
 
-include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/../ctoolchain.cmake")
 
 
 

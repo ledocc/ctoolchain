@@ -1,7 +1,7 @@
 
 
 
-include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/../ctoolchain.cmake")
 
 
 
@@ -9,12 +9,9 @@ include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##
 
-ctoolchain__compiler__use_gcc()
+ctoolchain__os__use_android(21 x86 clang c++_shared)
 
-ctoolchain__flags__use_last_cxx_version()
-
-ctoolchain__flags__build_32bit()
-ctoolchain__clean__var_init_list()
+ctoolchain__flags__use_cxx(14)
 
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##
