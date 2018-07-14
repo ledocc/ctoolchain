@@ -5,9 +5,25 @@
 ##---------------------------------------------------------------------------------------------------------------------##
 ##---------------------------------------------------------------------------------------------------------------------##
 
+function(ctoolchain__compiler__xcrun result)
+
+    find_program(xcrun_COMMAND "xcrun")
+
+    execute_process(
+        COMMAND "${xcrun_COMMAND}" ${ARGN}
+        OUTPUT_VARIABLE output
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
+    set(${result} "${output}" PARENT_SCOPE)
+
+endfunction()
+
+##---------------------------------------------------------------------------------------------------------------------##
+
 function(ctoolchain__compiler__find_compiler result compiler_name)
 
-    find_program(compiler_path "${compiler_name}")
+    find_program(compiler_path "${compiler_name}" ${ARGN})
 
     if(NOT compiler_path)
         message(FATAL_ERROR "[ctoolchain] - Compiler executable \"${compiler_name}\" not found.")
@@ -70,12 +86,23 @@ function(ctoolchain__compiler__use_clang)
 
     __ctoolchain__compiler__parse_argument( cmut__toolchain__compiler__use_clang "${ARGN}")
 
-    ctoolchain__compiler__find_compiler(clang_path clang${suffix})
-    ctoolchain__compiler__find_compiler(clangxx_path clang++${suffix})
+    ctoolchain__compiler__find_compiler(clang_path clang${suffix} HINTS /usr/local/opt/llvm/bin)
+    ctoolchain__compiler__find_compiler(clangxx_path clang++${suffix} HINTS /usr/local/opt/llvm/bin)
 
     if (NOT "${clangxx_path}" MATCHES ".*clang\\+\\+${suffix}")
         string(REPLACE "clang${suffix}" "clang++${suffix}" clangxx_path "${clangxx_path}")
     endif()
+
+    ctoolchain__compiler__use_compiler("${clang_path}" "${clangxx_path}")
+
+endfunction()
+
+##---------------------------------------------------------------------------------------------------------------------##
+
+function(ctoolchain__compiler__use_apple_clang)
+
+    ctoolchain__compiler__xcrun(clang_path -f clang)
+    ctoolchain__compiler__xcrun(clangxx_path -f clang++)
 
     ctoolchain__compiler__use_compiler("${clang_path}" "${clangxx_path}")
 
