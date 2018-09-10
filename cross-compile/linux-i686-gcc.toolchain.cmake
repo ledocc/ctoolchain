@@ -11,6 +11,8 @@ include("${CMAKE_CURRENT_LIST_DIR}/../ctoolchain.cmake")
 
 ctoolchain__os__use_linux(i686)
 
+set(CMAKE_CXX_COMPILER_TARGET i386-linux-gnu)
+
 include("${CMAKE_CURRENT_LIST_DIR}/../gcc.toolchain.cmake")
 
 ##--------------------------------------------------------------------------------------------------------------------##
