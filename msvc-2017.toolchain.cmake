@@ -12,7 +12,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/ctoolchain.cmake")
 ctoolchain__compiler__use_cl()
 ctoolchain__linker__use_link()
 
-ctoolchain__flags__use_cxx(14)
+ctoolchain__flags__use_last_cxx_version()
 
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##
