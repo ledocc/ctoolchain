@@ -20,7 +20,7 @@ macro(ctoolchain__flags__use_last_cxx_version)
 
     set(version $ENV{CTOOLCHAIN_LAST_CXX_VERSION})
     if( "${version}" STREQUAL "" )
-        set(version 14)
+        set(version 17)
     endif()
 
     ctoolchain__flags__use_cxx( ${version} )
