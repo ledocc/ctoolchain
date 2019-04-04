@@ -23,13 +23,11 @@ endfunction()
 
 function(ctoolchain__compiler__find_compiler result compiler_name)
 
-    find_program(compiler_path "${compiler_name}" ${ARGN})
+    find_program( ${result} "${compiler_name}" ${ARGN} )
 
-    if(NOT compiler_path)
+    if( NOT ${result} )
         message(FATAL_ERROR "[ctoolchain] - Compiler executable \"${compiler_name}\" not found.")
     endif()
-
-    set(${result} "${compiler_path}" PARENT_SCOPE)
 
 endfunction()
 
@@ -69,12 +67,8 @@ function(ctoolchain__compiler__use_gcc)
 
     __ctoolchain__compiler__parse_argument( cmut__toolchain__compiler__use_gcc "${ARGN}")
 
-    ctoolchain__compiler__find_compiler(gcc_path gcc${suffix})
-    ctoolchain__compiler__find_compiler(gxx_path g++${suffix})
-
-    if (NOT "${gxx_path}" MATCHES ".*g\\+\\+${suffix}")
-        string(REPLACE "gcc${suffix}" "g++${suffix}" gxx_path "${gxx_path}")
-    endif()
+    ctoolchain__compiler__find_compiler(gcc${suffix}_path gcc${suffix})
+    ctoolchain__compiler__find_compiler(gxx${suffix}_path g++${suffix})
 
     ctoolchain__compiler__use_compiler("${gcc_path}" "${gxx_path}")
 
@@ -88,10 +82,6 @@ function(ctoolchain__compiler__use_clang)
 
     ctoolchain__compiler__find_compiler(clang_path clang${suffix} HINTS /usr/local/opt/llvm/bin)
     ctoolchain__compiler__find_compiler(clangxx_path clang++${suffix} HINTS /usr/local/opt/llvm/bin)
-
-    if (NOT "${clangxx_path}" MATCHES ".*clang\\+\\+${suffix}")
-        string(REPLACE "clang${suffix}" "clang++${suffix}" clangxx_path "${clangxx_path}")
-    endif()
 
     ctoolchain__compiler__use_compiler("${clang_path}" "${clangxx_path}")
 
@@ -112,8 +102,8 @@ endfunction()
 
 function(ctoolchain__compiler__use_cl)
 
-    ctoolchain__compiler__find_compiler(compiler_path cl)
-    ctoolchain__compiler__use_compiler("${compiler_path}" "${compiler_path}")
+    ctoolchain__compiler__find_compiler(cl_path cl)
+    ctoolchain__compiler__use_compiler("${cl_path}" "${cl_path}")
 
 endfunction()
 
