@@ -6,11 +6,32 @@
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##
 
-macro(ctoolchain__flags__use_cxx version)
+function(ctoolchain__flags__get_last_cxx_version result)
 
-    set(CMAKE_CXX_STANDARD ${version})
-    set(CMAKE_CXX_EXTENSIONS OFF)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    if( DEFINED CTOOLCHAIN_LAST_CXX_VERSION )
+        set( version ${CTOOLCHAIN_LAST_CXX_VERSION} )
+    else()
+        if( NOT "$ENV{CTOOLCHAIN_LAST_CXX_VERSION}" STREQUAL "" )
+            set( version "$ENV{CTOOLCHAIN_LAST_CXX_VERSION}" )
+        else()
+            set( version 17 )
+        endif()
+        set( CTOOLCHAIN_LAST_CXX_VERSION CACHE STRING "Default cxx version used by ctoolchain" ${version} )
+    endif()
+
+    set(${result} ${version} PARENT_SCOPE)
+
+endfunction()
+
+##--------------------------------------------------------------------------------------------------------------------##
+
+macro(ctoolchain__flags__use_cxx version )
+
+    cmake_parse_arguments(ARG "EXTENSIONS" "" "" ${ARGN})
+
+    set(CMAKE_CXX_STANDARD ${version} )
+    set(CMAKE_CXX_EXTENSIONS ${ARG_EXTENSIONS})
+    set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 endmacro()
 
@@ -18,11 +39,7 @@ endmacro()
 
 macro(ctoolchain__flags__use_last_cxx_version)
 
-    set(version $ENV{CTOOLCHAIN_LAST_CXX_VERSION})
-    if( "${version}" STREQUAL "" )
-        set(version 17)
-    endif()
-
+    ctoolchain__flags__get_last_cxx_version( version )
     ctoolchain__flags__use_cxx( ${version} )
 
 endmacro()
