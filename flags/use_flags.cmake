@@ -6,6 +6,24 @@
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##
 
+function(ctoolchain__flags__get_last_cxx_version result)
+
+    if( DEFINED CTOOLCHAIN_LAST_CXX_VERSION )
+        set( version ${CTOOLCHAIN_LAST_CXX_VERSION} )
+    else()
+        if( NOT "$ENV{CTOOLCHAIN_LAST_CXX_VERSION}" STREQUAL "" )
+            set( version "$ENV{CTOOLCHAIN_LAST_CXX_VERSION}" )
+        else()
+            set( version 17 )
+        endif()
+        set( CTOOLCHAIN_LAST_CXX_VERSION CACHE STRING "Default cxx version used by ctoolchain" ${version} )
+    endif()
+
+    set(${result} ${version} PARENT_SCOPE)
+
+endfunction()
+
+##--------------------------------------------------------------------------------------------------------------------##
 
 macro(ctoolchain__flags__use_cxx version )
 
@@ -21,11 +39,7 @@ endmacro()
 
 macro(ctoolchain__flags__use_last_cxx_version)
 
-    set(version $ENV{CTOOLCHAIN_LAST_CXX_VERSION})
-    if( "${version}" STREQUAL "" )
-        set(version 17)
-    endif()
-
+    ctoolchain__flags__get_last_cxx_version( version )
     ctoolchain__flags__use_cxx( ${version} )
 
 endmacro()
