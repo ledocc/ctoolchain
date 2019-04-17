@@ -6,11 +6,14 @@
 ##--------------------------------------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------------------------------------##
 
-macro(ctoolchain__flags__use_cxx version)
 
-    set(CMAKE_CXX_STANDARD ${version})
-    set(CMAKE_CXX_EXTENSIONS OFF)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+macro(ctoolchain__flags__use_cxx version )
+
+    cmake_parse_arguments(ARG "EXTENSIONS" "" "" ${ARGN})
+
+    set(CMAKE_CXX_STANDARD ${version} )
+    set(CMAKE_CXX_EXTENSIONS ${ARG_EXTENSIONS})
+    set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 endmacro()
 
